@@ -10,7 +10,7 @@ const ShortenForm = () => {
 
     const handleShorten = async () => {
         try {
-            const response = await axios.post('http://localhost:3000/api/url/shorten', { originalUrl });
+            const response = await axios.post('https://url-shortener-ub92.onrender.com/api/url/shorten', { originalUrl });
             setShortenedUrl(response.data.shortUrl);
             setSnackbar({ open: true, message: 'URL shortened successfully!', severity: 'success' });
             setError('');

@@ -23,7 +23,7 @@ const ResetPassword = () => {
     const handleSubmit = async (values) => {
         const { password } = values;
         try {
-            const response = await axios.post(`http://localhost:3000/api/auth/reset_password/${id}/${token}`, { password });
+            const response = await axios.post(`https://url-shortener-ub92.onrender.com/api/auth/reset_password/${id}/${token}`, { password });
             setSnackbar({ open: true, message: response.data.msg, severity: 'success' });
             navigate('/');
         } catch (error) {

@@ -20,7 +20,7 @@ const ForgotPassword = () => {
 
     const handleSubmit = async (values, { resetForm }) => {
         try {
-            const res = await axios.post('http://localhost:3000/api/auth/forgot-password', values);
+            const res = await axios.post('https://url-shortener-ub92.onrender.com/api/auth/forgot-password', values);
             setSnackbar({ open: true, message: res.data.msg, severity: 'success' });
             resetForm();
         } catch (error) {

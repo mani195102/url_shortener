@@ -23,7 +23,7 @@ const Auth = ({ type }) => {
     const [snackbar, setSnackbar] = React.useState({ open: false, message: '', severity: '' });
 
     const handleSubmit = async (values, { resetForm }) => {
-        const url = type === 'login' ? 'http://localhost:3000/api/auth/login' : 'http://localhost:3000/api/auth/register';
+        const url = type === 'login' ? 'https://url-shortener-ub92.onrender.com/api/auth/login' : 'https://url-shortener-ub92.onrender.com/api/auth/register';
         try {
             const res = await axios.post(url, values);
             setSnackbar({ open: true, message: type === 'login' ? 'Logged in successfully' : 'Registered successfully', severity: 'success' });
