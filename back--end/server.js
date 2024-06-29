@@ -19,7 +19,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/url', urlRoutes);
 app.use(express.static('public'));
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 
 mongoose.connect(process.env.MONGODB, {
     useNewUrlParser: true,
