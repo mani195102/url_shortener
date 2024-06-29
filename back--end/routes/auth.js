@@ -6,7 +6,6 @@ const User = require('../model/User');
 const router = express.Router();
 require("dotenv").config();
 
-
 // Register
 router.post('/register', async (req, res) => {
     const { email, password, firstname, lastname } = req.body;
@@ -26,7 +25,7 @@ router.post('/register', async (req, res) => {
         await user.save();
         res.status(200).json({ msg: 'User registered successfully' });
     } catch (error) {
-        console.error(error.message);
+        console.error('Register Error:', error.message);
         res.status(500).send('Server error');
     }
 });
@@ -51,12 +50,12 @@ router.post('/login', async (req, res) => {
                 lastname: user.lastname
             },
         };
-        jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '2h' }, (err, token) => { // Increased expiration time
+        jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '2h' }, (err, token) => {
             if (err) throw err;
-            res.json({ token, user: payload.user }); // Return user details along with the token
+            res.json({ token, user: payload.user });
         });
     } catch (error) {
-        console.error(error.message);
+        console.error('Login Error:', error.message);
         res.status(500).send('Server error');
     }
 });
@@ -73,22 +72,22 @@ router.post('/forgot-password', async (req, res) => {
         const transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
-                user: 'srimani199300@gmail.com',
-                pass: 'emglcnnqtucgqifz',
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASS,
             },
             tls: {
                 rejectUnauthorized: false,
             },
         });
         const mailOptions = {
-            from: 'srimani199300@gmail.com',
+            from: process.env.EMAIL_USER,
             to: user.email,
             subject: 'Password Reset',
             text: `Click on this link to reset your password: http://localhost:5173/reset_password/${user.id}/${token}`,
         };
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
-                console.error(error);
+                console.error('Email Error:', error);
                 res.status(500).json({ msg: 'Error sending email' });
             } else {
                 console.log('Email sent: ' + info.response);
@@ -96,7 +95,7 @@ router.post('/forgot-password', async (req, res) => {
             }
         });
     } catch (error) {
-        console.error(error.message);
+        console.error('Forgot Password Error:', error.message);
         res.status(500).send('Server error');
     }
 });
@@ -105,9 +104,7 @@ router.post('/forgot-password', async (req, res) => {
 router.get('/reset_password/:id/:token', async (req, res) => {
     const { id, token } = req.params;
     try {
-        // Verify the token
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        // Check if the user ID matches the one in the token payload
         if (decoded.userId !== id) {
             return res.status(400).json({ msg: 'Invalid token' });
         }
@@ -116,7 +113,7 @@ router.get('/reset_password/:id/:token', async (req, res) => {
         if (error.name === 'TokenExpiredError') {
             return res.status(400).json({ msg: 'Password reset token expired' });
         }
-        console.error(error.message);
+        console.error('Reset Password Error:', error.message);
         res.status(500).send('Server error');
     }
 });
@@ -125,18 +122,14 @@ router.post('/reset_password/:id/:token', async (req, res) => {
     const { id, token } = req.params;
     const { password } = req.body;
     try {
-        // Verify the token
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        // Check if the user ID matches the one in the token payload
         if (decoded.userId !== id) {
             return res.status(400).json({ msg: 'Invalid token' });
         }
-        // Find the user by ID
         const user = await User.findById(id);
         if (!user) {
             return res.status(400).json({ msg: 'User not found' });
         }
-        // Update the user's password
         const salt = await bcrypt.genSalt(10);
         user.password = await bcrypt.hash(password, salt);
         await user.save();
@@ -145,10 +138,9 @@ router.post('/reset_password/:id/:token', async (req, res) => {
         if (error.name === 'TokenExpiredError') {
             return res.status(400).json({ msg: 'Password reset token expired' });
         }
-        console.error(error.message);
+        console.error('Reset Password Error:', error.message);
         res.status(500).send('Server error');
     }
 });
-
 
 module.exports = router;

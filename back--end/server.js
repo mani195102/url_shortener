@@ -5,6 +5,7 @@ const cors = require('cors');
 const authRoutes = require('./routes/auth');
 const urlRoutes = require('./routes/Url');
 require("dotenv").config();
+
 const app = express();
 
 // Middleware
@@ -12,7 +13,6 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 
 // Routes
 app.use('/api/auth', authRoutes);
@@ -31,5 +31,5 @@ mongoose.connect(process.env.MONGODB, {
         console.log(`Server running on port ${PORT}`);
     });
 }).catch((error) => {
-    console.error('Connection error', error.message);
+    console.error('Connection error:', error.message);
 });
