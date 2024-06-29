@@ -46,11 +46,14 @@ router.post('/login', async (req, res) => {
         const payload = {
             user: {
                 id: user.id,
+                email: user.email, // Optionally include more user information
+                firstname: user.firstname,
+                lastname: user.lastname
             },
         };
         jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '2h' }, (err, token) => { // Increased expiration time
             if (err) throw err;
-            res.json({ token });
+            res.json({ token, user: payload.user }); // Return user details along with the token
         });
     } catch (error) {
         console.error(error.message);
