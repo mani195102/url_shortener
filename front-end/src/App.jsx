@@ -57,23 +57,24 @@ const App = () => {
                 <Route path="/shortenForm" element={<ShortenForm />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/reset_password/:id/:token" element={<ResetPassword />} />
-                <Route path="/logout" element={<LogoutComponent />} />
+                <Route path="/logout" element={<LogoutComponent setIsLoggedIn={setIsLoggedIn} />} />
             </Routes>
         </div>
     );
 };
 
-const LogoutComponent = () => {
+const LogoutComponent = ({ setIsLoggedIn }) => {
     const navigate = useNavigate();
 
     useEffect(() => {
         const handleLogout = () => {
             localStorage.removeItem('token'); // Remove token from localStorage or session storage
+            setIsLoggedIn(false); // Update isLoggedIn state to false
             navigate('/'); // Navigate to home page
         };
 
         handleLogout(); // Call handleLogout on component mount
-    }, [navigate]); // Empty dependency array ensures it runs only once on mount
+    }, [navigate, setIsLoggedIn]); // Ensure setIsLoggedIn is included in dependencies to avoid stale closure
 
     return (
         <div>
