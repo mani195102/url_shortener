@@ -39,15 +39,17 @@ const App = () => {
             <AppBar position="static">
                 <Tabs value={value} onChange={handleChange}>
                     <Tab style={{ color: '#fff' }} label="Home" component={Link} to="/" />
+                    {isLoggedIn && (
+                        <Tab style={{ color: '#fff' }} label="Shorten URL" component={Link} to="/shortenForm" />
+                    )}
                     {!isLoggedIn && (
                         <Tab style={{ color: '#fff' }} label="Login" component={Link} to="/" />
                     )}
-                    {isLoggedIn && (
-                        <Tab style={{ color: '#fff' }} label="Logout" component={Link} to="/logout" />
+                    {!isLoggedIn && (
+                        <Tab style={{ color: '#fff' }} label="Register" component={Link} to="/register" />
                     )}
-                    <Tab style={{ color: '#fff' }} label="Register" component={Link} to="/register" />
                     {isLoggedIn && (
-                        <Tab style={{ color: '#fff' }} label="Shorten URL" component={Link} to="/shortenForm" />
+                        <Tab style={{ color: '#fff' }} label="Logout" component={Link} to="/" onClick={() => setIsLoggedIn(false)} />
                     )}
                 </Tabs>
             </AppBar>
