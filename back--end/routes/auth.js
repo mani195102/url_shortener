@@ -83,7 +83,7 @@ router.post('/forgot-password', async (req, res) => {
             from: process.env.EMAIL_USER,
             to: user.email,
             subject: 'Password Reset',
-            text: `Click on this link to reset your password: http://localhost:5173/reset_password/${user.id}/${token}`,
+            text: `Click on this link to reset your password: https://zen-url-shortenerapp.netlify.app/reset_password/${user.id}/${token}`,
         };
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
