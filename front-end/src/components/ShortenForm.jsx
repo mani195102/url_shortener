@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TextField, Button, Grid, Paper, Snackbar, SnackbarContent } from '@mui/material';
+import { TextField, Button, Grid, Paper, Snackbar, SnackbarContent, Link } from '@mui/material';
 import axios from 'axios';
 
 const ShortenForm = () => {
@@ -51,6 +51,9 @@ const ShortenForm = () => {
                             value={shortenedUrl}
                             disabled
                         />
+                        <Link href={shortenedUrl} target="_blank" rel="noopener" style={{ display: 'block', marginTop: '1em' }}>
+                            {shortenedUrl}
+                        </Link>
                     </Grid>
                 )}
                 {error && (
