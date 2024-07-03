@@ -3,11 +3,12 @@ const URL = require('../model/Url');
 const shortid = require('shortid');
 const router = express.Router();
 
+// POST route to shorten URL
 router.post('/shorten', async (req, res) => {
     const { originalUrl } = req.body;
     const baseUrl = req.protocol + '://' + req.get('host');
     const shortId = shortid.generate();
-    const shortUrl = `${baseUrl}/${shortId}`;
+    const shortUrl = `${baseUrl}/api/url/${shortId}`; // Adjusted format
 
     const url = new URL({ originalUrl, shortUrl });
     await url.save();
@@ -15,9 +16,10 @@ router.post('/shorten', async (req, res) => {
     res.status(200).json({ shortUrl });
 });
 
+// GET route to redirect to original URL
 router.get('/:shortId', async (req, res) => {
     const { shortId } = req.params;
-    const url = await URL.findOne({ shortUrl: new RegExp(shortId + '$') });
+    const url = await URL.findOne({ shortUrl: `${req.protocol}://${req.get('host')}/api/url/${shortId}` }); // Adjusted format
     if (url) {
         url.clicks++;
         await url.save();
