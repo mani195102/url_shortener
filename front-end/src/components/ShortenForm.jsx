@@ -26,9 +26,9 @@ const ShortenForm = () => {
     };
 
     return (
-        <Grid style={{ width:'100%' }} container alignItems="center" justifyContent="center">
-            <Paper elevation={3} style={{ padding: '20px', width: '100%', borderStartEndRadius: '0px', borderStartStartRadius: '0px' }}>
-                <Grid item xs={12} sm={8} md={12}>
+        <Grid container alignItems="center" justifyContent="center" style={{ width: '100%' }}>
+            <Paper elevation={3} style={{ padding: '20px', width: '100%', borderRadius: 0 }}>
+                <Grid item xs={12}>
                     <TextField
                         fullWidth
                         label="Enter URL to shorten"
@@ -37,22 +37,23 @@ const ShortenForm = () => {
                         onChange={(e) => setOriginalUrl(e.target.value)}
                     />
                 </Grid>
-                <Grid item xs={12} sm={4} md={2}>
+                <Grid item xs={12}>
                     <Button style={{ marginTop: '1em' }} variant="contained" color="primary" onClick={handleShorten}>
                         Shorten
                     </Button>
                 </Grid>
                 {shortenedUrl && (
                     <Grid style={{ marginTop: '1.5em' }} item xs={12}>
-                        <TextField
-                            fullWidth
-                            label="Shortened URL"
-                            variant="outlined"
-                            value={shortenedUrl}
-                            disabled
-                        />
-                        <Link href={shortenedUrl} target="_blank" rel="noopener" style={{ display: 'block', marginTop: '1em' }}>
-                            {shortenedUrl}
+                        <Link href={shortenedUrl} target="_blank" rel="noopener" underline="none">
+                            <TextField
+                                fullWidth
+                                label="Shortened URL"
+                                variant="outlined"
+                                value={shortenedUrl}
+                                InputProps={{
+                                    readOnly: true,
+                                }}
+                            />
                         </Link>
                     </Grid>
                 )}
